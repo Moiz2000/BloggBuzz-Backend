@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { UserModule } from './user/user.module';
 import { User } from './user/entity/user.entity';
+import { BlogModule } from './blog/blog.module';
 
 @Module({
   imports: [UserModule,TypeOrmModule.forRoot({
@@ -15,7 +16,7 @@ import { User } from './user/entity/user.entity';
     database: 'blogbuzzdb',
     entities: [User],
     synchronize: true,
-  })],
+  }), BlogModule],
   controllers: [AppController],
   providers: [AppService],
 })
