@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { UserModule } from './user/user.module';
 import { User } from './user/entity/user.entity';
 import { BlogModule } from './blog/blog.module';
+import { Blog } from './blog/entity/blog.entity';
 
 @Module({
   imports: [UserModule,TypeOrmModule.forRoot({
@@ -14,7 +15,7 @@ import { BlogModule } from './blog/blog.module';
     username: 'root',
     password: 'abc123',
     database: 'blogbuzzdb',
-    entities: [User],
+    entities: [User,Blog],
     synchronize: true,
   }), BlogModule],
   controllers: [AppController],
