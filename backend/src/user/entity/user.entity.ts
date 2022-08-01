@@ -17,7 +17,7 @@ export class User {
   @Column()
   password: string;
 
-  @OneToMany(()=>Blog ,(blogs)=>blogs.user,{cascade:true})
+  @OneToMany(()=>Blog ,(blog)=>blog.user,{cascade:true})
   blogs:Blog[];
 
   @OneToMany(()=>Blog_Like, (blog_likes)=>blog_likes.user,{cascade:true})

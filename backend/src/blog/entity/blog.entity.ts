@@ -10,7 +10,7 @@ export class Blog{
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(()=>User, (user)=>user.blogs,{nullable:false, onDelete:"CASCADE"})
+    @ManyToOne(()=>User, (user)=>user.blogs,{nullable:true, onDelete:"CASCADE"})
     // @JoinColumn()
     user:User
 

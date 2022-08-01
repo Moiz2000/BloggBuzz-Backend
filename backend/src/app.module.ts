@@ -19,7 +19,7 @@ import { Blog_Comment } from './blog_comment/entity/blog_comment.entity';
     host: 'localhost',
     port: 3306,
     username: 'root',
-    password: 'abc123',
+    password: '',
     database: 'blogbuzzdb',
     entities: [User,Blog,Tag,Blog_Like,Blog_Comment],
     synchronize: true,

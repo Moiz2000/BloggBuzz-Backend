@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm';
+import { createQuery } from 'mysql2/typings/mysql/lib/Connection';
 import { Repository } from 'typeorm';
 import { CreateBlogDto} from './dto/create-blog.dto';
+import { DeleteBlogDto } from './dto/delete-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
 import { Blog } from './entity/blog.entity';
 
@@ -17,18 +19,21 @@ export class BlogService {
         return this.blogRepository.find();
     }
     getbyId(Blog_ID:number){
-        return this.blogRepository.findOne({where:{Blog_ID:Blog_ID}});
+        return this.blogRepository.findOne({where:{id:Blog_ID}});
     }
-    // getUsersblog(userId:number){
-    //     return this.blogRepository.findOne({where:{userId:userId}});
-    // }
-    createblog(createBlogDto:CreateBlogDto, userId:number){
+    getUsersblog(userId:number){
+        return this.blogRepository.find();
+    }
+    createblog(createBlogDto:CreateBlogDto){
         return this.blogRepository.save(createBlogDto);
     }
-    delete(param:{userId:number,Blog_ID:number}){
-        return this.blogRepository.delete(param);
+    // delete(deleteBlogDto:DeleteBlogDto){
+    //     return this.blogRepository.delete(deleteBlogDto);
+    // }
+    delete(deleteBlogDto:DeleteBlogDto){
+        return this.blogRepository.delete(deleteBlogDto);
     }
-    update(updateBlogDto:UpdateBlogDto, param:{userId:number,Blog_ID:number}){
-        return this.blogRepository.update(param,updateBlogDto);
+    update(updateBlogDto:UpdateBlogDto, Blog_ID:number){
+        return this.blogRepository.update(Blog_ID,updateBlogDto);
     }
 }
