@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import { UserService } from 'src/user/user.service';
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { DeleteBlogDto } from './dto/delete-blog.dto';
@@ -7,6 +8,8 @@ import { UpdateBlogDto } from './dto/update-blog.dto';
 @Controller()
 export class BlogController {
     constructor(private blogService: BlogService){}
+
+    //constructor(private userService:UserService){}
     @Get('blog')
     getBlogs(){
         return this.blogService.get()
@@ -23,7 +26,7 @@ export class BlogController {
     
     @Post('user/:userId/blog')
     Write(@Body() createBlogDto:CreateBlogDto, @Param('userId',ParseIntPipe) userId:number){
-        // createBlogDto.user=userId;
+        //createBlogDto.user=
         return this.blogService.createblog(createBlogDto)
     }
     @Patch('user/:userId/blog/:Blog_ID')

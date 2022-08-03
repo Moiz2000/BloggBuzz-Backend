@@ -16,13 +16,13 @@ export class BlogService {
 
 
     get():Promise<Blog[]>{
-        return this.blogRepository.find();
+        return this.blogRepository.find({relations:{blog_comments:true}});
     }
     getbyId(Blog_ID:number){
         return this.blogRepository.findOne({where:{id:Blog_ID}});
     }
     getUsersblog(userId:number){
-        return this.blogRepository.find();
+        return this.blogRepository.find({relations:{user:true},where:{user:{id:userId}}});
     }
     createblog(createBlogDto:CreateBlogDto){
         return this.blogRepository.save(createBlogDto);
