@@ -1,12 +1,12 @@
-import { IsBoolean, IsInt, IsNumber } from "class-validator";
+import { IsBoolean, IsNumber } from "class-validator";
+import { Blog } from "src/blog/entity/blog.entity";
+import { User } from "src/user/entity/user.entity";
 
 export class CreateLikeDto{
-    @IsInt()
-    userId:number;
+    user:User;
 
-    @IsInt()
-    blogId:number;
+    blog:Blog;
 
-    @IsBoolean()
+    // @IsBoolean()
     Like_Status:boolean;
 }

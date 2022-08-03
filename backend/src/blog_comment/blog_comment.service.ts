@@ -15,7 +15,7 @@ export class CommentsService {
 
     fetchBlogComment(blogId:number):Promise<Blog_Comment[]>
     {
-        return this.commentRepository.find({relations:{blog:true,user:true}});
+        return this.commentRepository.query('SELECT * FROM BLOG_COMMENT WHERE blogId='+blogId+'');
     }
     WriteComment(createCommentDto:CreateCommentDto){
         return this.commentRepository.save(createCommentDto);

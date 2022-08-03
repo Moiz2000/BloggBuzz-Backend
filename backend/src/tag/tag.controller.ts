@@ -20,7 +20,7 @@ export class TagController {
     {
         return this.tagService.getByName(tagName);
     }
-    @Post('tag/createTag')
+    @Post('tag')
     WriteTag(@Body() createTagDto:CreateTagDto){
         return this.tagService.createTag(createTagDto);
     }

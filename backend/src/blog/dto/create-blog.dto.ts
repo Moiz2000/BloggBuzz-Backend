@@ -1,8 +1,9 @@
 import { IsNumber, IsString } from "class-validator";
+import { User } from "src/user/entity/user.entity";
 
 export class CreateBlogDto {
-    @IsNumber()
-    userId: number;
+    //@IsNumber()
+    user: User;
 
     @IsString()
     Title: string;

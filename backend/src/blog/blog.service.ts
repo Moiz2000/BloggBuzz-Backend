@@ -34,6 +34,7 @@ export class BlogService {
         return this.blogRepository.delete(deleteBlogDto);
     }
     update(updateBlogDto:UpdateBlogDto, Blog_ID:number){
+        
         return this.blogRepository.update(Blog_ID,updateBlogDto);
     }
 }
