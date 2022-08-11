@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm'
@@ -19,6 +19,13 @@ import { BlogTagsController } from './blog_tags/blog_tags.controller';
 import { BlogTagsService } from './blog_tags/blog_tags.service';
 import { BlogTagsModule } from './blog_tags/blog_tags.module';
 import { Blog_Tags } from './blog_tags/entity/blog_tags.entity';
+import { AuthenticationMiddleware } from './user/authentication.middleware';
+import { BlogController } from './blog/blog.controller';
+import { BlogLikeController } from './blog_like/blog_like.controller';
+import { CommentsController } from './blog_comment/blog_comment.controller';
+import { JwtModule } from '@nestjs/jwt';
+import { UserController } from './user/user.controller';
+import { TagController } from './tag/tag.controller';
 
 @Module({
   imports: [UserModule,TypeOrmModule.forRoot({
@@ -30,8 +37,24 @@ import { Blog_Tags } from './blog_tags/entity/blog_tags.entity';
     database: 'blogbuzzdb',
     entities: [User,Blog,Tag,Blog_Like,Blog_Comment,Blog_Tags],
     synchronize: true,
-  }), BlogModule, TagModule, BlogLikeModule, CommentsModule, AuthModule, ProfileModule, BlogTagsModule],
+  }), BlogModule, TagModule, BlogLikeModule, CommentsModule, AuthModule, ProfileModule, BlogTagsModule,JwtModule],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer:MiddlewareConsumer){
+    consumer.apply(AuthenticationMiddleware).exclude(
+      {path:'blog',method:RequestMethod.GET},
+      {path:'blog/:Blog_ID', method:RequestMethod.GET},
+      {path:'user/SignUp', method:RequestMethod.POST},
+      {path:'user/signin', method:RequestMethod.POST},
+      {path:'blog/:blogId/comment', method:RequestMethod.GET},
+      {path:'blog/:blogId/blog_like', method:RequestMethod.GET},
+      {path:'blog/:blogId/blog_likeCount', method:RequestMethod.GET},
+      {path:'blog/blogtag/:blogId', method:RequestMethod.GET},
+      {path:'tag', method:RequestMethod.GET},
+      {path:'tag/:tagId', method:RequestMethod.GET},
+      {path:'tag/:tagName', method:RequestMethod.GET},
+    ).forRoutes(UserController,BlogController,BlogLikeController,BlogTagsController,CommentsController,TagController);
+  }
+}

@@ -14,7 +14,7 @@ export class BlogTagsController {
         private tagService:TagService,
         ){}
 
-    @Get('blog/:blogId/blogtag')
+    @Get('blog/blogtag/:blogId')
     gettags(@Param('blogId',ParseIntPipe) blogId:number){
         return this.blogTagsServices.getAll(blogId);
     }

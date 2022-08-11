@@ -3,29 +3,44 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Patch,
   Post,
+  Res,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { AuthGuard } from '@nestjs/passport';
+import { response } from 'express';
+//import { response } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entity/user.entity';
 import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService,
+    private jwtService:JwtService,) {}
 
   @Get()
   getUsers() {
     return this.userService.get();
   }
 
-  @Post()
-  store(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  @Post('/SignUp')
+  async store(@Body() createUserDto: CreateUserDto, @Res() res) {
+    const newUser=await this.userService.create(createUserDto);
+    return res.status(HttpStatus.CREATED).json({newUser}); //for created 201 is used
   }
-
+  @UseGuards(AuthGuard('local'))
+  @Post('/signin')
+    async SignIn(@Res() response, @Body() user: User) {
+        const token = await this.userService.login(user);
+        return response.status(HttpStatus.OK).json(token)
+  }
   @Patch('/:userId')
   update(
     @Body() updateUserDto: UpdateUserDto,

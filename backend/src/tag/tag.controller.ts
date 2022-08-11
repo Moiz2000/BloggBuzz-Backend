@@ -15,7 +15,7 @@ export class TagController {
     {
         return this.tagService.getById(tagId);
     }
-    @Get('tag/tagName')
+    @Get('tag/:tagName')
     getusingName(@Param('tagName', ParseUUIDPipe) tagName:string)
     {
         return this.tagService.getByName(tagName);

@@ -15,7 +15,7 @@ export class BlogTagsService {
 
     getAll(blogId:number):Promise<Blog_Tags[]>
     {
-        return this.blogTagsRepository.query('SELECT * FROM BLOG_TAGS WHERE blogId='+blogId+'')
+        return this.blogTagsRepository.query('SELECT TAG.name FROM TAG INNER JOIN BLOG_TAGS ON TAG.id=BLOG_TAGS.tagId WHERE blogId='+blogId+'')
         //return this.blogTagsRepository.find({relations:{blog:true,tag:true}})
         // return this.blogTagsRepository.find({relations:{blog:true},where:{blog:{id:blogId}}});
     }
