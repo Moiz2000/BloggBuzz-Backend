@@ -20,11 +20,15 @@ export class CommentsService {
     WriteComment(createCommentDto:CreateCommentDto){
         return this.commentRepository.save(createCommentDto);
     }
-
+    getbyId(id:number){
+        return this.commentRepository.findOne({relations:{blog:true,user:true},where:{id:id}});
+    }
     // UpdateComment(updateCommentDto:UpdateCommentDto){
     //     return this.commentRepository.update(updateCommentDto);
     // }
-
+    getForComment(id:number){
+        return this.commentRepository.findOne({where:{id:id}});
+    }
     DeleteComment(deleteCommentDto:DeleteCommentDto){
         return this.commentRepository.delete(deleteCommentDto);
     }

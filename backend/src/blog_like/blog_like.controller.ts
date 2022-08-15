@@ -1,4 +1,7 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { json } from 'stream/consumers';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Req, Res} from '@nestjs/common';
+import { HttpStatus, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { BlogService } from 'src/blog/blog.service';
 import { UserService } from 'src/user/user.service';
 import { BlogLikeService } from './blog_like.service';
@@ -23,18 +26,38 @@ export class BlogLikeController {
     getCountOfBlogLikes(@Param('blogId',ParseIntPipe) blogId:number){
         return this.blogLikeService.GetLikesCount(blogId)
     }
-    @Post('user/:userId/blog/:blogId/blog_like')
-    async LikeBlog(@Body() createLikeDto:CreateLikeDto,@Param('userId',ParseIntPipe) userId:number,@Param('blogId',ParseIntPipe) blogId:number){
-        createLikeDto.blog=await this.blogService.getbyId(blogId);
-        createLikeDto.user=await this.userService.show(userId);
-        createLikeDto.Like_Status=true;
-        return this.blogLikeService.AddLike(createLikeDto);
+
+    @UseGuards(AuthGuard('jwt'))
+    @Post('user/blog/:blogId/blog_like')
+    async LikeBlog(@Body() createLikeDto:CreateLikeDto,@Req() req:any,@Param('blogId',ParseIntPipe) blogId:number,@Res() response){
+        createLikeDto.blog=await this.blogService.getForComment(blogId);
+        req.user=await this.userService.getTokenUser(req);
+        try{
+            createLikeDto.user=req.user;
+            createLikeDto.Like_Status=true;
+            const like=await this.blogLikeService.AddLike(createLikeDto);
+            return response.status(HttpStatus.OK).json({like})
+        }
+        catch(err){
+            return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json("Something went wrong");
+        }
     }
-    @Delete('user/:userId/blog/:blogId/blog_like')
-    async UnlikeBlog(@Body() deleteLikeDto:DeleteLikeDto, @Param('userId',ParseIntPipe) userId:number,@Param('blogId',ParseIntPipe) blogId:number){
-        deleteLikeDto.blog=await this.blogService.getbyId(blogId);
-        deleteLikeDto.user=await this.userService.show(userId);
-        return this.blogLikeService.DeleteLike(deleteLikeDto);
+
+    @UseGuards(AuthGuard('jwt'))
+    @Delete('user/blog/:blogId/blog_like')
+    async UnlikeBlog(@Body() deleteLikeDto:DeleteLikeDto,@Req() req:any,@Param('blogId',ParseIntPipe) blogId:number,@Res() response){
+        const blog=await this.blogService.getbyId(blogId);
+        req.user=await this.userService.getTokenUser(req);
+        try{
+                deleteLikeDto.user=req.user;
+                deleteLikeDto.blog=await this.blogService.getForComment(blogId)
+                //console.log(deleteLikeDto);
+                const deleted=await this.blogLikeService.DeleteLike(deleteLikeDto);
+                return response.status(HttpStatus.OK).json("You have Unliked the blog");
+        }
+        catch(err){
+            return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json("Something went wrong");
+        }
     }
 }
 

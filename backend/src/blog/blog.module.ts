@@ -1,3 +1,4 @@
+import { TagModule } from './../tag/tag.module';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from 'src/user/user.module';
@@ -9,6 +10,6 @@ import { Blog } from './entity/blog.entity';
   controllers: [BlogController],
   providers: [BlogService],
   exports:[BlogService],
-  imports: [UserModule,TypeOrmModule.forFeature([Blog])],
+  imports: [UserModule,TagModule,TypeOrmModule.forFeature([Blog])],
 })
 export class BlogModule {}

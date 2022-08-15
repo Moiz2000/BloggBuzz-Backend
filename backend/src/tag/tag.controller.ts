@@ -1,26 +1,29 @@
-import { Body, Controller, Get, Param, ParseIntPipe, ParseUUIDPipe, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, ParseUUIDPipe, Post, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { TagService } from './tag.service';
 
-@Controller()
+@Controller('tag')
 export class TagController {
     constructor(private tagService:TagService){}
 
-    @Get('tag')
+    @Get()
     getAll(){
         return this.tagService.getAll();
     }
-    @Get('tag/:tagId')
+    @Get('/:tagId')
     getusingId(@Param('tagId', ParseIntPipe) tagId:number)
     {
         return this.tagService.getById(tagId);
     }
-    @Get('tag/:tagName')
-    getusingName(@Param('tagName', ParseUUIDPipe) tagName:string)
+    @Get('/tagName')
+    getusingName(@Param('tagName') tagName:string)
     {
+        console.log(tagName);
         return this.tagService.getByName(tagName);
     }
-    @Post('tag')
+    @UseGuards(AuthGuard('jwt'))
+    @Post()
     WriteTag(@Body() createTagDto:CreateTagDto){
         return this.tagService.createTag(createTagDto);
     }

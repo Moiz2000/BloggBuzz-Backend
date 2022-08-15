@@ -29,19 +29,29 @@ export class UserService {
     return this.userRepository.findOne({ where: { id } });
   }
 
-  findByEmail(email: string) {
+  findByEmail(email: string):Promise<User> {
     return this.userRepository.findOne({ where: { email } });
   }
 
+  findByUsername(name: string) {
+    return this.userRepository.findOne({ where: { name } });
+  }
   delete(userId: number) {
     return this.userRepository.delete(userId);
   }
-
-
-  async login(user: any) {
-    const payload = { email:user.email};
+  async getTokenUser(req:any)
+  {
+      const token = req.headers.authorization.split(' ')[1];
+      const decoded=this.jwtService.verify(token)
+      console.log(decoded.email);
+      const user=await this.findByEmail(decoded.email);
+      req.user=user;
+      return req.user;
+  }
+  async login(user: any, jwt:JwtService) {
+    const payload = { email: user.email };
     return {
-      access_token: this.jwtService.sign(payload),
+      token: jwt.sign(payload),
     };
   }
 

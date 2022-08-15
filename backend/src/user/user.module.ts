@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path/posix';
 import { jwtConstants } from './auth.constant';
@@ -18,8 +17,8 @@ import { UserService } from './user.service';
   imports: [PassportModule,
     JwtModule.register({
     secret: jwtConstants.secret,
-    signOptions: { expiresIn: '10s' },
-  }),ServeStaticModule.forRoot({rootPath: join(__dirname, '..', 'public'),}),
+    signOptions: { expiresIn: '2h' },
+  }),
   TypeOrmModule.forFeature([User])],
 })
 export class UserModule {}
