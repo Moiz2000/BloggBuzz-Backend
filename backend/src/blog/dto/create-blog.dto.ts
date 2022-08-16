@@ -10,4 +10,7 @@ export class CreateBlogDto {
 
     @IsString()
     Text: string;
+
+    @IsString()
+    ImageName: string;
 }

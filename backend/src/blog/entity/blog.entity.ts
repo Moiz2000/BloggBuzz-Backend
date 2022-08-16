@@ -5,6 +5,7 @@ import { Tag } from "src/tag/entity/tag.entity";
 import { User } from "src/user/entity/user.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Blog_Tags } from "src/blog_tags/entity/blog_tags.entity";
+// import { Image } from "src/blog_image/entity/blog_image.entity";
 
 @Entity()
 export class Blog{
@@ -20,6 +21,9 @@ export class Blog{
 
     @Column({type: "longtext"})
     Text: string;
+
+    @Column({nullable:true})
+    ImageName: string;
 
     @CreateDateColumn()
     // @Column({ type: 'timestamptz', nullable: true })
@@ -40,4 +44,7 @@ export class Blog{
 
     @OneToMany(()=>Blog_Comment, (blog_comments)=>blog_comments.blog,{cascade:true})
     blog_comments:Comment[];
+
+    // @OneToMany(()=>Image, (blog_image)=>blog_image.blog,{cascade:true})
+    // blog_image:Image[];
 }

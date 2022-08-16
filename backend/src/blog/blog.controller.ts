@@ -1,13 +1,45 @@
 import { AuthGuard } from '@nestjs/passport';
-import { HttpStatus, UseGuards } from '@nestjs/common';
+import { HttpStatus, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Req, Request, Res } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { response } from 'express';
+import { diskStorage } from 'multer';
+import path = require('path');
+import { join } from 'path';
+import { v4 as uuidv4 } from 'uuid';
+// import { Any } from 'typeorm';
+// import { storage } from 'src/blog_image/blog_image.controller';
+
+var filed= 'abc';
+
+// const namefile=global.filed;
+export const storage = {
+    storage: diskStorage({
+        destination: './uploads/profileimages',
+        filename: (req, file, cb) => {
+            const filename: string = path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
+            const extension: string = path.parse(file.originalname).ext;
+            // const namefile=global.filed
+            filed=filename+extension;
+            console.log(filename)
+            cb(null, `${filename}${extension}`)
+        }
+    })
+
+}
+
+
+
 
 @Controller()
 export class BlogController {
+
+    public ImageFileName: [];
+    // public file: any;
     constructor(
         private blogService: BlogService,
         private userService:UserService,
@@ -28,21 +60,42 @@ export class BlogController {
     //     return this.blogService.getUsersblog(userId)
     // }
     
+    // // @UseGuards(AuthGuard('jwt'))
+    // @UseInterceptors(FileInterceptor('file', storage))
+    // // @Post('user/blog')
+    // uploadFile(@UploadedFile() file): Object {
+    //     console.log(file)
+    //     this.ImageFileName = file.filename; 
+    //     return ({imagePath: file.path})}
+    
     @UseGuards(AuthGuard('jwt'))
+    @UseInterceptors(FileInterceptor('file', storage))
     @Post('user/blog')
-    async Write(@Body() createBlogDto:CreateBlogDto, @Req() req:any,@Res() res){
+    async Write(@Body() createBlogDto:CreateBlogDto, @Req() req:any, @Res() res, @UploadedFile() file:[]){
+        console.log("in write function")
+        // this.file=this.uploadFile
+        // console.log(this.file.filename)
+        // this.ImageFileName=filed;
+        this.ImageFileName = file;
+        console.log(this.ImageFileName)
+        // setTimeout(() => {  console.log("World!"); }, 100);
         req.user=await this.userService.getTokenUser(req);
         
         try{
+            console.log("in write function try")
             createBlogDto.user=req.user;
+            // createBlogDto.ImageName=this.ImageFileName;
             const blog=await this.blogService.createblog(createBlogDto);
             return res.status(HttpStatus.CREATED).json({blog})
+            
         }
         catch(error){
+            console.log("in write function catch")
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json("Something went wrong");
         }
         
     }
+
 
     @UseGuards(AuthGuard('jwt'))
     @Patch('user/blog/:Blog_ID')

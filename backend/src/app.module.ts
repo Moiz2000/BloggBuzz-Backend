@@ -16,6 +16,8 @@ import { ProfileModule } from './profile/profile.module';
 import { BlogTagsModule } from './blog_tags/blog_tags.module';
 import { Blog_Tags } from './blog_tags/entity/blog_tags.entity';
 import { JwtModule } from '@nestjs/jwt';
+// import { ImageModule } from './blog_image/blog_image.module';
+// import { Image } from './blog_image/entity/blog_image.entity';
 
 @Module({
   imports: [UserModule,TypeOrmModule.forRoot({
@@ -23,7 +25,7 @@ import { JwtModule } from '@nestjs/jwt';
     host: 'localhost',
     port: 3306,
     username: 'root',
-    password: '',
+    password: 'abc123',
     database: 'blogbuzzdb',
     entities: [User,Blog,Tag,Blog_Like,Blog_Comment,Blog_Tags],
     synchronize: true,
