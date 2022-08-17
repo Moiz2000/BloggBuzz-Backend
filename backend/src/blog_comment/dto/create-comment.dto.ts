@@ -3,13 +3,13 @@ import { Blog } from "src/blog/entity/blog.entity";
 import { User } from "src/user/entity/user.entity";
 import { Blog_Comment } from "../entity/blog_comment.entity";
 
-export class CreateCommentDto{
-    user:User;
+export class CreateCommentDto {
+    user: User;
 
-    blog:Blog;
+    blog: Blog;
 
     @IsString()
-    Text:string;
+    Text: string;
 
-    blog_comment:Blog_Comment;
+    // blog_comment:Blog_Comment;
 }
