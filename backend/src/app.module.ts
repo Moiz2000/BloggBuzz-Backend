@@ -20,16 +20,16 @@ import { JwtModule } from '@nestjs/jwt';
 // import { Image } from './blog_image/entity/blog_image.entity';
 
 @Module({
-  imports: [UserModule,TypeOrmModule.forRoot({
+  imports: [UserModule, TypeOrmModule.forRoot({
     type: 'mysql',
     host: 'localhost',
     port: 3306,
     username: 'root',
-    password: 'abc123',
+    password: 'fantastic1122',
     database: 'blogbuzzdb',
-    entities: [User,Blog,Tag,Blog_Like,Blog_Comment,Blog_Tags],
+    entities: [User, Blog, Tag, Blog_Like, Blog_Comment, Blog_Tags],
     synchronize: true,
-  }), BlogModule, TagModule, BlogLikeModule, CommentsModule, ProfileModule, BlogTagsModule,JwtModule],
+  }), BlogModule, TagModule, BlogLikeModule, CommentsModule, ProfileModule, BlogTagsModule, JwtModule],
   controllers: [AppController],
   providers: [AppService],
 })
