@@ -14,7 +14,7 @@ export class CommentsService {
     ) { }
 
     fetchBlogComment(blogId: number): Promise<Blog_Comment[]> {
-        return this.commentRepository.query('SELECT * FROM BLOG_COMMENT WHERE blogId=' + blogId + '');
+        return this.commentRepository.query('SELECT BLOG_COMMENT.*,USER.name FROM BLOG_COMMENT INNER JOIN USER on USER.id=BLOG_COMMENT.userId WHERE blogId=' + blogId + ' ORDER BY BLOG_COMMENT.id DESC');
     }
     WriteComment(createCommentDto: CreateCommentDto) {
         return this.commentRepository.save(createCommentDto);
