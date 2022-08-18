@@ -17,20 +17,20 @@ import { v4 as uuidv4 } from 'uuid';
 // var filed= 'abc';
 
 // const namefile=global.filed;
-export const storage = {
-    storage: diskStorage({
-        destination: './uploads/profileimages',
-        filename: (req, file, cb) => {
-            const filename: string = path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
-            const extension: string = path.parse(file.originalname).ext;
-            // const namefile=global.filed
-            // filed=filename+extension;
-            console.log(filename)
-            cb(null, `${filename}${extension}`)
-        }
-    })
+// export const storage = {
+//     storage: diskStorage({
+//         destination: './uploads/profileimages',
+//         filename: (req, file, cb) => {
+//             const filename: string = path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
+//             const extension: string = path.parse(file.originalname).ext;
+//             // const namefile=global.filed
+//             // filed=filename+extension;
+//             console.log(filename)
+//             cb(null, `${filename}${extension}`)
+//         }
+//     })
 
-}
+// }
 
 
 
@@ -38,7 +38,7 @@ export const storage = {
 @Controller()
 export class BlogController {
 
-    public ImageFileName: string;
+    // public ImageFileName: string;
     // public file: any;
     constructor(
         private blogService: BlogService,
@@ -70,19 +70,19 @@ export class BlogController {
     // // @Post('user/blog')
 
     @UseGuards(AuthGuard('jwt'))
-    @UseInterceptors(FileInterceptor('file', storage))
+    // @UseInterceptors(FileInterceptor('file', storage))
     @Post('user/blog')
     // uploadFile() {
     //     console.log(file)
     //     // this.ImageFileName = file.filename;
     //     // return ({ imagePath: file.path })
-    // }
-    async Write(@Body() createBlogDto: CreateBlogDto, @Req() req: any, @Res() res, @UploadedFile() file) {
+    // } @UploadedFile() file
+    async Write(@Body() createBlogDto: CreateBlogDto, @Req() req: any, @Res() res) {
         console.log("in write function")
-        console.log(file)
+        // console.log(file)
         // this.file=this.uploadFile
         // console.log(this.file.filename)
-        this.ImageFileName = file.filename;
+        // this.ImageFileName = "asdas";
 
         // setTimeout(() => {  console.log("World!"); }, 100);
         req.user = await this.userService.getTokenUser(req);
@@ -90,7 +90,8 @@ export class BlogController {
         try {
             console.log("in write function try")
             createBlogDto.user = req.user;
-            createBlogDto.ImageName = this.ImageFileName;
+            // console.log(Object.values(createBlogDto['tagID']))
+            // createBlogDto.ImageName = this.ImageFileName;
             const blog = await this.blogService.createblog(createBlogDto);
             return res.status(HttpStatus.CREATED).json({ blog })
 
