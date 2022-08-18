@@ -25,7 +25,7 @@ import { JwtModule } from '@nestjs/jwt';
     host: 'localhost',
     port: 3306,
     username: 'root',
-    password: 'fantastic1122',
+    password: '',
     database: 'blogbuzzdb',
     entities: [User, Blog, Tag, Blog_Like, Blog_Comment, Blog_Tags],
     synchronize: true,

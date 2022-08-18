@@ -38,8 +38,10 @@ export class UserController {
   @UseGuards(AuthGuard('local'))
   @Post('/signin')
     async SignIn(@Res() response, @Body() user: User) {
+      //console.log(user.email);
         const token = await this.userService.login(user,this.jwtService);
-        return response.status(HttpStatus.OK).json(token)
+        const userData=await this.userService.findByEmail(user.email);
+        return response.status(HttpStatus.OK).json({token,userData})
   }
 
   @UseGuards(AuthGuard('jwt'))
