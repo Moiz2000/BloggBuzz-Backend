@@ -10,26 +10,26 @@ import { Blog_Comment } from './entity/blog_comment.entity';
 export class CommentsService {
     constructor(
         @InjectRepository(Blog_Comment)
-        private commentRepository:Repository<Blog_Comment>
-    ){}
+        private commentRepository: Repository<Blog_Comment>
+    ) { }
 
-    fetchBlogComment(blogId:number):Promise<Blog_Comment[]>
-    {
-        return this.commentRepository.query('SELECT * FROM BLOG_COMMENT WHERE blogId='+blogId+'');
+    fetchBlogComment(blogId: number): Promise<Blog_Comment[]> {
+        return this.commentRepository.query('SELECT * FROM BLOG_COMMENT WHERE blogId=' + blogId + '');
     }
-    WriteComment(createCommentDto:CreateCommentDto){
+    WriteComment(createCommentDto: CreateCommentDto) {
         return this.commentRepository.save(createCommentDto);
     }
-    getbyId(id:number){
-        return this.commentRepository.findOne({relations:{blog:true,user:true},where:{id:id}});
+    getbyId(id: number) {
+        return this.commentRepository.findOne({ relations: { blog: true, user: true }, where: { id: id } });
     }
-    // UpdateComment(updateCommentDto:UpdateCommentDto){
-    //     return this.commentRepository.update(updateCommentDto);
-    // }
-    getForComment(id:number){
-        return this.commentRepository.findOne({where:{id:id}});
+    UpdateComment(Text1: string, Id: number, BlogId: number, userid: number) {
+        console.log(Text1)
+        return this.commentRepository.query('UPDATE blog_comment SET Text=' + '"' + Object.values(Text1) + '"' + ' WHERE id=' + Id + ' AND blogId=' + BlogId + ' AND userId=' + userid + '');
     }
-    DeleteComment(deleteCommentDto:DeleteCommentDto){
+    getForComment(id: number) {
+        return this.commentRepository.findOne({ where: { id: id } });
+    }
+    DeleteComment(deleteCommentDto: DeleteCommentDto) {
         return this.commentRepository.delete(deleteCommentDto);
     }
 }

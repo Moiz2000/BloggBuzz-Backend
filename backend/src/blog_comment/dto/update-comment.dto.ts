@@ -1,21 +1,25 @@
 import { IsDate, IsInt, IsString } from "class-validator";
 
-export class UpdateCommentDto{
+export class UpdateCommentDto {
     // @IsInt()
-    userId:number;
+    userId: number;
 
     // @IsInt()
-    blogId:number;
+    // blogId: number;
+
+    id: number;
 
     @IsString()
-    Text:string;
-    
-    // @IsInt()
-    parentCommentId:number;
+    Text: string;
 
-    // @IsInt()
-    parentCommentUser:number;
 
-    // @IsInt()
-    parentCommentBlog:number;
+
+    //     // @IsInt()
+    //     parentCommentId:number;
+
+    //     // @IsInt()
+    //     parentCommentUser:number;
+
+    //     // @IsInt()
+    //     parentCommentBlog:number;
 }
