@@ -22,11 +22,11 @@ import { JwtModule } from '@nestjs/jwt';
 @Module({
   imports: [UserModule, TypeOrmModule.forRoot({
     type: 'mysql',
-    host: 'localhost',
+    host: 'us-cdbr-east-06.cleardb.net',
     port: 3306,
-    username: 'root',
-    password: 'fantastic1122',
-    database: 'blogbuzzdb',
+    username: 'b511eef04d65d6',
+    password: 'b51a6754',
+    database: 'heroku_f8f6ea7d313f791',
     entities: [User, Blog, Tag, Blog_Like, Blog_Comment],
     synchronize: true,
   }), BlogModule, TagModule, BlogLikeModule, CommentsModule, ProfileModule, JwtModule],
@@ -35,3 +35,5 @@ import { JwtModule } from '@nestjs/jwt';
 })
 export class AppModule {
 }
+
+// mysql://b511eef04d65d6:b51a6754@us-cdbr-east-06.cleardb.net/heroku_f8f6ea7d313f791?reconnect=true
