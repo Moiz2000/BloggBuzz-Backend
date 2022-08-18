@@ -1,4 +1,5 @@
 import { IsNumber, IsString } from "class-validator";
+import { Tag } from "src/tag/entity/tag.entity";
 import { User } from "src/user/entity/user.entity";
 
 export class CreateBlogDto {
@@ -11,6 +12,8 @@ export class CreateBlogDto {
     @IsString()
     Text: string;
 
-    @IsString()
-    ImageName: string;
+    tag: Tag
+
+    // @IsString()
+    // ImageName: string;
 }
