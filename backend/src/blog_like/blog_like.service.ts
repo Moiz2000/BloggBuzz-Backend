@@ -25,7 +25,8 @@ export class BlogLikeService {
     DeleteLike(deleteLikeDto:DeleteLikeDto){
         return this.blogLikeRepository.delete(deleteLikeDto);
     }
-    GetLikesWithUser(blogId:number,userId:number){
-        return this.blogLikeRepository.findOne({relations:{user:true,blog:true},where:{blog:{id:blogId},user:{id:userId}}})
+    GetLikesWithUser(userId:number,blogId:number){
+        console.log()
+        return this.blogLikeRepository.query('SELECT * FROM BLOG_LIKE WHERE blogId='+blogId+' AND userId='+userId+'')
     }
 }

@@ -22,11 +22,10 @@ export class BlogLikeController {
         return this.blogLikeService.GetLikesOfBlogs(blogId)
     }
 
-    @Get('user/blog/')
+    @Get('user/:userId/blog/:blogId')
     getUserLike(@Param('userId',ParseIntPipe) userId:number,@Param('blogId',ParseIntPipe) blogId:number)
     {
-        return this.blogLikeService.GetLikesWithUser(userId,blogId
-            )
+        return this.blogLikeService.GetLikesWithUser(userId,blogId)
     }
     @Get('blog/:blogId/blog_likeCount')
     getCountOfBlogLikes(@Param('blogId',ParseIntPipe) blogId:number){

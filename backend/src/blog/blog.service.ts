@@ -28,19 +28,19 @@ export class BlogService {
             const user = await this.userService.findByUsername(name);
             const Id = user.id;
 
-            return this.blogRepository.query('SELECT USER.name,USER.id AS UserId,BLOG.* FROM BLOG INNER JOIN USER ON USER.id=BLOG.userId WHERE USER.id=' + Id + ' ORDER BY BLOG.id DESC')
+            return this.blogRepository.query('SELECT BLOG.*,TAG.name FROM USER INNER JOIN BLOG ON USER.id=BLOG.userId INNER JOIN TAG ON TAG.id=BLOG.tagId WHERE USER.id=' + Id + ' ORDER BY BLOG.id DESC')
         }
         else if (tagName) {
             const cat = await this.tagServices.getByName(tagName);
             const Id = cat.id;
-            return this.blogRepository.query('SELECT blog.* FROM tag INNER JOIN blog_tags on tag.id=blog_tags.tagId INNER JOIN blog on blog_tags.blogId=blog.id WHERE tag.id=' + Id + ' ORDER BY BLOG.id DESC')
+            return this.blogRepository.query('SELECT BLOG.*,TAG.name FROM BLOG INNER JOIN TAG ON TAG.id=BLOG.tagId WHERE tag.id=' + Id + ' ORDER BY BLOG.id DESC')
         }
         else {
-            return this.blogRepository.find({ order: { id: "DESC" } });
+            return this.blogRepository.query('SELECT BLOG.*,TAG.name FROM BLOG INNER JOIN TAG ON TAG.id=BLOG.tagId ORDER BY BLOG.id DESC')
         }
     }
     getbyId(Blog_ID: number) {
-        const blog = this.blogRepository.query('SELECT BLOG.*,USER.name FROM BLOG INNER JOIN USER ON USER.id=BLOG.userId WHERE BLOG.id=' + Blog_ID + '')
+        const blog = this.blogRepository.query('SELECT BLOG.*,USER.name AS UserName,TAG.name as TagName FROM BLOG INNER JOIN USER ON USER.id=BLOG.userId INNER JOIN TAG ON TAG.id=BLOG.tagId WHERE BLOG.id=' + Blog_ID + '')
         return blog;
         // return this.blogRepository.findOne({relations:{blog_comments:true,user:true},where:{id:Blog_ID}});
     }
